@@ -10,29 +10,40 @@ body {
     font-family: Arial;
     color: white;
     text-align: center;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-/* VIDEO BACKGROUND */
-video {
+/* 🎥 BACKGROUND VIDEO (9:16, dim, fade) */
+#bgVideo {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    height: 100vh;
+    width: auto;
+    transform: translate(-50%, -50%);
     object-fit: cover;
-    z-index: -1;
+    z-index: -2;
+    opacity: 0.5;
+    filter: brightness(0.7);
+    animation: fadeVideo 3s ease-in;
 }
 
-/* LOCK SCREEN */
+@keyframes fadeVideo {
+    from { opacity: 0; }
+    to { opacity: 0.5; }
+}
+
+/* 🔐 LOCK SCREEN */
 #lockScreen {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
 }
 
 input, button {
-    padding: 10px;
+    padding: 12px;
     font-size: 18px;
     border-radius: 10px;
     border: none;
@@ -43,23 +54,41 @@ input, button {
 #main {
     display: none;
     padding: 20px;
+    background: rgba(0,0,0,0.4);
 }
 
-/* GALLERY */
-.gallery {
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    scroll-snap-type: x mandatory;
+/* 📸 PHOTO POP ANIMATION */
+.photo-container {
+    position: relative;
+    height: 200px;
+    margin-top: 20px;
 }
 
-.gallery img {
-    width: 150px;          /* smaller size */
-    height: 150px;         /* makes it square (1:1) */
-    object-fit: cover;     /* crop nicely */
-    border-radius: 15px;
-    scroll-snap-align: center;
-}BACKGROUNDCKGROUND/* LOVE LETTER */
+.pop {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0;
+    animation: popup 9s infinite;
+}
+
+.pop:nth-child(1) { animation-delay: 0s; }
+.pop:nth-child(2) { animation-delay: 3s; }
+.pop:nth-child(3) { animation-delay: 6s; }
+
+@keyframes popup {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+    10% { opacity: 1; transform: translateX(-50%) scale(1); }
+    30% { opacity: 1; }
+    40% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+    100% { opacity: 0; }
+}
+
+/* 💌 LETTER */
 #letter {
     display: none;
     background: rgba(255,255,255,0.9);
@@ -68,10 +97,10 @@ input, button {
     border-radius: 15px;
 }
 
-/* PROPOSAL */
+/* 💍 PROPOSAL */
 #proposal {
     display: none;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 canvas {
@@ -85,63 +114,55 @@ canvas {
 
 <body>
 
-<!-- BACKGROUND VIDEO -->
-<video autoplay muted loop>
+<!-- 🎥 VIDEO -->
+<video autoplay muted loop playsinline id="bgVideo">
     <source src="video.mp4" type="video/mp4">
 </video>
 
-<!-- PASSWORD SCREEN -->
+<!-- 🔐 PASSWORD -->
 <div id="lockScreen">
     <h1>🔒 Only for My Love</h1>
     <input type="password" id="pass" placeholder="Enter your birthday ❤️">
     <button onclick="unlock()">Unlock 💖</button>
 </div>
 
-<!-- MAIN CONTENT -->
+<!-- 💖 MAIN -->
 <div id="main">
 
 <h1>Happy Birthday My Vava ❤️</h1>
 
-<!-- 💖 THIS IS WHERE YOU WRITE YOUR MESSAGE -->
-<p id="yourMessage">
-Happy Birthday My Love❤️
-Vaveee I love you da  
-
-I wish we keep celebrating your birthday's together forever 🧿
-
-Radheee Radheee
+<p>
+Happy birthday my love ❤️  
+You are my happiness, my peace, my everything.  
+I’m so lucky to have you in my life. 💖  
 </p>
 
-<!-- TIME COUNTER -->
 <h2>We have been together for ⏳</h2>
 <p id="counter"></p>
 
-<!-- GALLERY -->
-<h2>Our Memories 📸</h2>
-<div class="gallery">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
+<!-- 📸 PHOTOS -->
+<div class="photo-container">
+    <img src="photo1.jpg" class="pop">
+    <img src="photo2.jpg" class="pop">
+    <img src="photo3.jpg" class="pop">
 </div>
 
 <br>
 
-<!-- VOICE -->
 <button onclick="playVoice()">Play My Voice ❤️</button>
 
 <br><br>
 
-<!-- LOVE LETTER -->
 <button onclick="showLetter()">Read Love Letter 💌</button>
 
 <div id="letter">
-    <!-- 💖 YOU CAN ALSO EDIT THIS LETTER -->
     <p>
-    Write your own love letter here ❤️  
+    My dearest Vava ❤️  
+    You are the best thing that ever happened to me.  
+    I love you more than anything. 💖  
     </p>
 </div>
 
-<!-- PROPOSAL -->
 <div id="proposal">
     <h2>Will you be mine forever? 💍</h2>
     <button onclick="yes()">YES ❤️</button>
@@ -153,7 +174,7 @@ Radheee Radheee
 
 </div>
 
-<!-- AUDIO -->
+<!-- 🎙️ AUDIO -->
 <audio id="voice">
     <source src="voice.mp3" type="audio/mpeg">
 </audio>
@@ -162,12 +183,12 @@ Radheee Radheee
     <source src="song.mp3" type="audio/mpeg">
 </audio>
 
-<!-- FIREWORK -->
+<!-- 🎆 FIREWORK -->
 <canvas id="canvas"></canvas>
 
 <script>
 
-// PASSWORD (HER DOB)
+// 🔐 PASSWORD
 function unlock(){
     if(document.getElementById("pass").value === "21042006"){
         document.getElementById("lockScreen").style.display="none";
@@ -178,17 +199,17 @@ function unlock(){
     }
 }
 
-// VOICE
+// 🎙️ VOICE
 function playVoice(){
     document.getElementById("voice").play();
 }
 
-// LETTER
+// 💌 LETTER
 function showLetter(){
     document.getElementById("letter").style.display="block";
 }
 
-// PROPOSAL
+// 💍 PROPOSAL
 function showProposal(){
     document.getElementById("proposal").style.display="block";
 }
@@ -201,7 +222,7 @@ function no(){
     alert("No option 😜❤️");
 }
 
-// RELATIONSHIP COUNTER
+// ⏳ COUNTER
 var startDate = new Date("April 9, 2024").getTime();
 
 setInterval(()=>{
@@ -215,7 +236,7 @@ setInterval(()=>{
         days + " days " + hours + " hours ❤️";
 },1000);
 
-// HEART FIREWORKS
+// ❤️ HEART FIREWORK
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
