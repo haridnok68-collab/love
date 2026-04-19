@@ -54,12 +54,12 @@ input, button {
 }
 
 .gallery img {
-    width: 80%;
+    width: 150px;          /* smaller size */
+    height: 150px;         /* makes it square (1:1) */
+    object-fit: cover;     /* crop nicely */
     border-radius: 15px;
     scroll-snap-align: center;
-}
-
-/* LOVE LETTER */
+}BACKGROUNDCKGROUND/* LOVE LETTER */
 #letter {
     display: none;
     background: rgba(255,255,255,0.9);
